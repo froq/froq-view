@@ -168,7 +168,7 @@ final class View
     /**
      * Include file.
      * @param  string $file
-     * @param  array  $data
+     * @param  array|null $data
      * @return void
      */
     final public function include(string $file, array $data = null)
