@@ -54,7 +54,7 @@ final class View
     private $app;
 
     /**
-     * View file (real).
+     * File (main).
      * @var string
      */
     private $file;
@@ -181,12 +181,36 @@ final class View
     }
 
     /**
+     * Set meta.
+     * @param  string $name
+     * @param  string $value
+     * @return self
+     */
+    final public function setMeta(string $name, string $value): self
+    {
+        $this->metas[$name] = $value;
+
+        return $this;
+    }
+
+    /**
+     * Get meta.
+     * @param  string      $name
+     * @param  string|null $valueDefault
+     * @return string|null
+     */
+    final public function getMeta(string $name, string $valueDefault = null)
+    {
+        return $this->metas[$name] ?? $valueDefault;
+    }
+
+    /**
      * Prepare file path.
      * @param  string $file
      * @param  bool   $fileCheck
      * @return string
      */
-    final public function prepareFile(string $file, bool $fileCheck = true): string
+    final private function prepareFile(string $file, bool $fileCheck = true): string
     {
         if ($file == '') {
             throw new ViewException("No file given!");
@@ -217,12 +241,12 @@ final class View
     }
 
     /**
-     * Prepare global file path.
+     * Prepare default file path.
      * @param  string $file
      * @param  bool   $fileCheck
      * @return string
      */
-    final public function prepareFileDefault(string $file, bool $fileCheck = true): string
+    final private function prepareFileDefault(string $file, bool $fileCheck = true): string
     {
         $file = sprintf('./app/service/default/view/%s.php', $file);
         if ($fileCheck && !is_file($file)) {
@@ -230,29 +254,5 @@ final class View
         }
 
         return $file;
-    }
-
-    /**
-     * Set meta.
-     * @param  string $name
-     * @param  string $value
-     * @return self
-     */
-    final public function setMeta(string $name, string $value): self
-    {
-        $this->metas[$name] = $value;
-
-        return $this;
-    }
-
-    /**
-     * Get meta.
-     * @param  string      $name
-     * @param  string|null $valueDefault
-     * @return string|null
-     */
-    final public function getMeta(string $name, string $valueDefault = null)
-    {
-        return $this->metas[$name] ?? $valueDefault;
     }
 }
