@@ -226,7 +226,7 @@ final class View
         // check file
         if ($fileCheck && !is_file($file)) {
             // look up default folder
-            if ($this->app->service->isDefault()) {
+            if ($this->app->service->isDefaultService()) {
                 $file = sprintf('./app/service/default/%s/view/%s',
                     $this->app->service->name, basename($file));
             }
