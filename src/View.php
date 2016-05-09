@@ -63,13 +63,13 @@ final class View
      * Head file.
      * @var string
      */
-    private $fileHead;
+    private $headFile;
 
     /**
      * Foot file.
      * @var string
      */
-    private $fileFoot;
+    private $footFile;
 
     /**
      * Metas.
@@ -81,32 +81,14 @@ final class View
      * Constructor.
      * @param Froq\App $app
      * @param string   $file
-     * @param bool     $usePartials
      */
-    final public function __construct(App $app, string $file = null, bool $usePartials = false)
+    final public function __construct(App $app, string $file = null)
     {
         $this->app = $app;
 
         // set file
         if ($file) {
             $this->setFile($file);
-        }
-
-        // set partials
-        if ($usePartials) {
-            // head: check local service file
-            $this->fileHead = $this->prepareFile(self::PARTIAL_HEAD, false);
-            if (!is_file($this->fileHead)) {
-                // look up for global service file
-                $this->fileHead = $this->prepareFileDefault(self::PARTIAL_HEAD);
-            }
-
-            // foot: check local service file
-            $this->fileFoot = $this->prepareFile(self::PARTIAL_FOOT, false);
-            if (!is_file($this->fileFoot)) {
-                // look up for global service file
-                $this->fileFoot = $this->prepareFileDefault(self::PARTIAL_FOOT);
-            }
         }
     }
 
@@ -118,6 +100,38 @@ final class View
     final public function setFile(string $file): self
     {
         $this->file = $this->prepareFile($file);
+
+        return $this;
+    }
+
+    /**
+     * Set head file.
+     * @return self
+     */
+    final public function setHeadFile(): self
+    {
+        // check local service file
+        $this->headFile = $this->prepareFile(self::PARTIAL_HEAD, false);
+        if (!is_file($this->headFile)) {
+            // look up for global service file
+            $this->headFile = $this->prepareDefaultFile(self::PARTIAL_HEAD);
+        }
+
+        return $this;
+    }
+
+    /**
+     * Set foot file.
+     * @return self
+     */
+    final public function setFootFile(): self
+    {
+        // check local service file
+        $this->footFile = $this->prepareFile(self::PARTIAL_FOOT, false);
+        if (!is_file($this->footFile)) {
+            // look up for global service file
+            $this->footFile = $this->prepareDefaultFile(self::PARTIAL_FOOT);
+        }
 
         return $this;
     }
@@ -139,7 +153,9 @@ final class View
      */
     final public function displayHead(array $data = null)
     {
-        $this->include($this->fileHead, $data);
+        if ($this->headFile) {
+            $this->include($this->headFile, $data);
+        }
     }
 
     /**
@@ -149,7 +165,9 @@ final class View
      */
     final public function displayFoot(array $data = null)
     {
-        $this->include($this->fileFoot, $data);
+        if ($this->footFile) {
+            $this->include($this->footFile, $data);
+        }
     }
 
     /**
@@ -245,7 +263,7 @@ final class View
      * @param  bool   $fileCheck
      * @return string
      */
-    final private function prepareFileDefault(string $file, bool $fileCheck = true): string
+    final private function prepareDefaultFile(string $file, bool $fileCheck = true): string
     {
         $file = sprintf('./app/service/default/view/%s.php', $file);
         if ($fileCheck && !is_file($file)) {
