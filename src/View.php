@@ -183,10 +183,10 @@ final class View
     /**
      * Set meta.
      * @param  string $name
-     * @param  string $value
+     * @param  any    $value
      * @return self
      */
-    final public function setMeta(string $name, string $value): self
+    final public function setMeta(string $name, $value): self
     {
         $this->metas[$name] = $value;
 
