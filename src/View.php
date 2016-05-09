@@ -139,7 +139,7 @@ final class View
      */
     final public function displayHead(array $data = null)
     {
-        $this->include($fileHead, $data);
+        $this->include($this->fileHead, $data);
     }
 
     /**
@@ -149,7 +149,7 @@ final class View
      */
     final public function displayFoot(array $data = null)
     {
-        $this->include($fileFoot, $data);
+        $this->include($this->fileFoot, $data);
     }
 
     /**
