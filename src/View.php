@@ -129,7 +129,6 @@ final class View
      */
     final public function display(array $data = null)
     {
-        // set and include main (real) file
         $this->include($this->file, $data);
     }
 
