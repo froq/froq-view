@@ -195,11 +195,11 @@ final class View
 
     /**
      * Get meta.
-     * @param  string      $name
-     * @param  string|null $valueDefault
-     * @return string|null
+     * @param  string $name
+     * @param  any    $valueDefault
+     * @return any
      */
-    final public function getMeta(string $name, string $valueDefault = null)
+    final public function getMeta(string $name, $valueDefault = null)
     {
         return $this->metas[$name] ?? $valueDefault;
     }
