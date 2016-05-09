@@ -21,15 +21,15 @@
  */
 declare(strict_types=1);
 
-namespace Froq\Util;
+namespace Froq\View;
 
 use Froq\App;
 use Froq\Util\Traits\GetterTrait as Getter;
 
 /**
  * @package     Froq
- * @subpackage  Froq\Util
- * @object      Froq\Util\View
+ * @subpackage  Froq\View
+ * @object      Froq\View\View
  * @author      Kerem Güneş <k-gun@mail.com>
  */
 final class View
