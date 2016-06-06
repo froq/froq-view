@@ -27,10 +27,10 @@ use Froq\App;
 use Froq\Util\Traits\GetterTrait;
 
 /**
- * @package     Froq
- * @subpackage  Froq\View
- * @object      Froq\View\View
- * @author      Kerem Güneş <k-gun@mail.com>
+ * @package    Froq
+ * @subpackage Froq\View
+ * @object     Froq\View\View
+ * @author     Kerem Güneş <k-gun@mail.com>
  */
 final class View
 {
