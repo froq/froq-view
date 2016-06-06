@@ -24,7 +24,7 @@ declare(strict_types=1);
 namespace Froq\View;
 
 use Froq\App;
-use Froq\Util\Traits\GetterTrait as Getter;
+use Froq\Util\Traits\GetterTrait;
 
 /**
  * @package     Froq
@@ -36,9 +36,9 @@ final class View
 {
     /**
      * Getter.
-     * @object Froq\Util\Traits\Getter
+     * @object Froq\Util\Traits\GetterTrait
      */
-    use Getter;
+    use GetterTrait;
 
     /**
      * Partial files.
