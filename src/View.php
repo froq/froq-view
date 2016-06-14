@@ -225,6 +225,7 @@ final class View
      * @param  string $file
      * @param  bool   $fileCheck
      * @return string
+     * @throws Froq\View\ViewException
      */
     final private function prepareFile(string $file, bool $fileCheck = true): string
     {
@@ -256,10 +257,11 @@ final class View
     }
 
     /**
-     * Prepare default file.
+     * Prepare file default.
      * @param  string $file
      * @param  bool   $fileCheck
      * @return string
+     * @throws Froq\View\ViewException
      */
     final private function prepareFileDefault(string $file, bool $fileCheck = true): string
     {
