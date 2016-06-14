@@ -113,7 +113,7 @@ final class View
         $this->fileHead = $this->prepareFile(self::PARTIAL_HEAD, false);
         if (!is_file($this->fileHead)) {
             // look up for global service file
-            $this->fileHead = $this->prepareDefaultFile(self::PARTIAL_HEAD);
+            $this->fileHead = $this->prepareFileDefault(self::PARTIAL_HEAD);
         }
 
         return $this;
@@ -129,7 +129,7 @@ final class View
         $this->fileFoot = $this->prepareFile(self::PARTIAL_FOOT, false);
         if (!is_file($this->fileFoot)) {
             // look up for global service file
-            $this->fileFoot = $this->prepareDefaultFile(self::PARTIAL_FOOT);
+            $this->fileFoot = $this->prepareFileDefault(self::PARTIAL_FOOT);
         }
 
         return $this;
@@ -261,7 +261,7 @@ final class View
      * @param  bool   $fileCheck
      * @return string
      */
-    final private function prepareDefaultFile(string $file, bool $fileCheck = true): string
+    final private function prepareFileDefault(string $file, bool $fileCheck = true): string
     {
         $file = sprintf('./app/service/default/view/%s.php', $file);
         if ($fileCheck && !is_file($file)) {
