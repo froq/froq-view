@@ -184,7 +184,7 @@ final class View
 
     /**
      * Include file.
-     * @param  string $file
+     * @param  string     $file
      * @param  array|null $data
      * @return void
      */
