@@ -60,16 +60,16 @@ final class View
     private $file;
 
     /**
-     * Head file.
+     * File head (header).
      * @var string
      */
-    private $headFile;
+    private $fileHead;
 
     /**
-     * Foot file.
+     * File foot (footer).
      * @var string
      */
-    private $footFile;
+    private $fileFoot;
 
     /**
      * Metas.
@@ -105,32 +105,32 @@ final class View
     }
 
     /**
-     * Set head file.
+     * Set file head.
      * @return self
      */
-    final public function setHeadFile(): self
+    final public function setFileHead(): self
     {
         // check local service file
-        $this->headFile = $this->prepareFile(self::PARTIAL_HEAD, false);
-        if (!is_file($this->headFile)) {
+        $this->fileHead = $this->prepareFile(self::PARTIAL_HEAD, false);
+        if (!is_file($this->fileHead)) {
             // look up for global service file
-            $this->headFile = $this->prepareDefaultFile(self::PARTIAL_HEAD);
+            $this->fileHead = $this->prepareDefaultFile(self::PARTIAL_HEAD);
         }
 
         return $this;
     }
 
     /**
-     * Set foot file.
+     * Set file foot.
      * @return self
      */
-    final public function setFootFile(): self
+    final public function setFileFoot(): self
     {
         // check local service file
-        $this->footFile = $this->prepareFile(self::PARTIAL_FOOT, false);
-        if (!is_file($this->footFile)) {
+        $this->fileFoot = $this->prepareFile(self::PARTIAL_FOOT, false);
+        if (!is_file($this->fileFoot)) {
             // look up for global service file
-            $this->footFile = $this->prepareDefaultFile(self::PARTIAL_FOOT);
+            $this->fileFoot = $this->prepareDefaultFile(self::PARTIAL_FOOT);
         }
 
         return $this;
@@ -153,8 +153,8 @@ final class View
      */
     final public function displayHead(array $data = null)
     {
-        if ($this->headFile) {
-            $this->include($this->headFile, $data);
+        if ($this->fileHead) {
+            $this->include($this->fileHead, $data);
         }
     }
 
@@ -165,8 +165,8 @@ final class View
      */
     final public function displayFoot(array $data = null)
     {
-        if ($this->footFile) {
-            $this->include($this->footFile, $data);
+        if ($this->fileFoot) {
+            $this->include($this->fileFoot, $data);
         }
     }
 
