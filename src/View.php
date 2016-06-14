@@ -23,7 +23,7 @@ declare(strict_types=1);
 
 namespace Froq\View;
 
-use Froq\App;
+use Froq\Service\Service;
 use Froq\Util\Traits\GetterTrait;
 
 /**
@@ -48,10 +48,10 @@ final class View
           PARTIAL_FOOT = 'partial/foot';
 
     /**
-     * App object.
-     * @var Froq\App
+     * Service object.
+     * @var Froq\Service\Service
      */
-    private $app;
+    private $service;
 
     /**
      * File (main).
@@ -79,12 +79,12 @@ final class View
 
     /**
      * Constructor.
-     * @param Froq\App $app
-     * @param string   $file
+     * @param Froq\Service\Service $service
+     * @param string               $file
      */
-    final public function __construct(App $app, string $file = null)
+    final public function __construct(Service $service, string $file = null)
     {
-        $this->app = $app;
+        $this->service = $service;
 
         // set file
         if ($file) {
@@ -237,16 +237,15 @@ final class View
         if ($file[0] == '.') {
             $file = sprintf('%s.php', $file);
         } else {
-            $file = sprintf('./app/service/%s/view/%s.php',
-                $this->app->service->name, $file);
+            $file = sprintf('./app/service/%s/view/%s.php', $this->service->name, $file);
         }
 
         // check file
         if ($fileCheck && !is_file($file)) {
             // look up default folder
-            if ($this->app->service->isDefaultService()) {
+            if ($this->service->isDefaultService()) {
                 $file = sprintf('./app/service/default/%s/view/%s',
-                    $this->app->service->name, basename($file));
+                    $this->service->name, basename($file));
             }
 
             if (!is_file($file)) {
