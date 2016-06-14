@@ -48,7 +48,7 @@ final class View
           PARTIAL_FOOT = 'partial/foot';
 
     /**
-     * Service object.
+     * Service.
      * @var Froq\Service\Service
      */
     private $service;
@@ -86,7 +86,6 @@ final class View
     {
         $this->service = $service;
 
-        // set file
         if ($file) {
             $this->setFile($file);
         }
@@ -137,7 +136,7 @@ final class View
     }
 
     /**
-     * Display view file.
+     * Display.
      * @param  array|null $data
      * @return void
      */
@@ -147,7 +146,7 @@ final class View
     }
 
     /**
-     * Display partial/head file.
+     * Display head.
      * @param  array|null $data
      * @return void
      */
@@ -159,8 +158,8 @@ final class View
     }
 
     /**
-     * Display partial/foot file.
-     * @param  array $data
+     * Display foot.
+     * @param  array|null $data
      * @return void
      */
     final public function displayFoot(array $data = null)
@@ -171,7 +170,7 @@ final class View
     }
 
     /**
-     * Display all files.
+     * Display all.
      * @param  array|null $data
      * @return void
      */
@@ -183,7 +182,7 @@ final class View
     }
 
     /**
-     * Include file.
+     * Include.
      * @param  string     $file
      * @param  array|null $data
      * @return void
@@ -222,7 +221,7 @@ final class View
     }
 
     /**
-     * Prepare file path.
+     * Prepare file.
      * @param  string $file
      * @param  bool   $fileCheck
      * @return string
@@ -257,7 +256,7 @@ final class View
     }
 
     /**
-     * Prepare default file path.
+     * Prepare default file.
      * @param  string $file
      * @param  bool   $fileCheck
      * @return string
