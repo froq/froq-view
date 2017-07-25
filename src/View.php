@@ -237,15 +237,15 @@ final class View
         if ($file[0] == '.') {
             $file = sprintf('%s.php', $file);
         } else {
-            $file = sprintf('./app/service/%s/view/%s.php', $this->service->name, $file);
+            $file = sprintf('%s/app/service/%s/view/%s.php', APP_DIR, $this->service->getName(), $file);
         }
 
         // check file
         if ($fileCheck && !is_file($file)) {
             // look up default folder
             if ($this->service->isDefaultService()) {
-                $file = sprintf('./app/service/default/%s/view/%s',
-                    $this->service->name, basename($file));
+                $file = sprintf('%s/app/service/default/%s/view/%s', APP_DIR,
+                    $this->service->getName(), basename($file));
             }
 
             if (!is_file($file)) {
@@ -265,7 +265,7 @@ final class View
      */
     final private function prepareFileDefault(string $file, bool $fileCheck = true): string
     {
-        $file = sprintf('./app/service/default/view/%s.php', $file);
+        $file = sprintf('%s/app/service/default/view/%s.php', APP_DIR, $file);
         if ($fileCheck && !is_file($file)) {
             throw new ViewException("View file not found! file: '{$file}'");
         }
