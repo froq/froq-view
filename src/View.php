@@ -75,7 +75,7 @@ final class View
      * @param Froq\Service\Service $service
      * @param string               $file
      */
-    final public function __construct(Service $service, string $file = null)
+    public function __construct(Service $service, string $file = null)
     {
         $this->service = $service;
 
@@ -134,7 +134,7 @@ final class View
      * @param  string $file
      * @return self
      */
-    final public function setFile(string $file): self
+    public function setFile(string $file): self
     {
         $this->file = $this->prepareFile($file);
 
@@ -145,7 +145,7 @@ final class View
      * Set file head.
      * @return self
      */
-    final public function setFileHead(): self
+    public function setFileHead(): self
     {
         // check local service file
         $this->fileHead = $this->prepareFile(self::PARTIAL_HEAD, false);
@@ -161,7 +161,7 @@ final class View
      * Set file foot.
      * @return self
      */
-    final public function setFileFoot(): self
+    public function setFileFoot(): self
     {
         // check local service file
         $this->fileFoot = $this->prepareFile(self::PARTIAL_FOOT, false);
@@ -178,7 +178,7 @@ final class View
      * @param  array|null $data
      * @return void
      */
-    final public function display(array $data = null)
+    public function display(array $data = null)
     {
         $this->include($this->file, $data);
     }
@@ -188,7 +188,7 @@ final class View
      * @param  array|null $data
      * @return void
      */
-    final public function displayHead(array $data = null)
+    public function displayHead(array $data = null)
     {
         if ($this->fileHead) {
             $this->include($this->fileHead, $data);
@@ -200,7 +200,7 @@ final class View
      * @param  array|null $data
      * @return void
      */
-    final public function displayFoot(array $data = null)
+    public function displayFoot(array $data = null)
     {
         if ($this->fileFoot) {
             $this->include($this->fileFoot, $data);
@@ -212,7 +212,7 @@ final class View
      * @param  array|null $data
      * @return void
      */
-    final public function displayAll(array $data = null)
+    public function displayAll(array $data = null)
     {
         $this->displayHead($data);
         $this->display($data);
@@ -225,7 +225,7 @@ final class View
      * @param  array|null $data
      * @return void
      */
-    final public function include(string $file, array $data = null)
+    public function include(string $file, array $data = null)
     {
         if (!empty($data)) {
             extract($data);
@@ -240,7 +240,7 @@ final class View
      * @param  any    $value
      * @return self
      */
-    final public function setMeta(string $name, $value): self
+    public function setMeta(string $name, $value): self
     {
         $this->metas[$name] = $value;
 
@@ -253,7 +253,7 @@ final class View
      * @param  any    $valueDefault
      * @return any
      */
-    final public function getMeta(string $name, $valueDefault = null)
+    public function getMeta(string $name, $valueDefault = null)
     {
         return $this->metas[$name] ?? $valueDefault;
     }
@@ -265,7 +265,7 @@ final class View
      * @return string
      * @throws Froq\View\ViewException
      */
-    final private function prepareFile(string $file, bool $fileCheck = true): string
+    private function prepareFile(string $file, bool $fileCheck = true): string
     {
         if ($file == '') {
             throw new ViewException("No file given!");
@@ -301,7 +301,7 @@ final class View
      * @return string
      * @throws Froq\View\ViewException
      */
-    final private function prepareFileDefault(string $file, bool $fileCheck = true): string
+    private function prepareFileDefault(string $file, bool $fileCheck = true): string
     {
         $file = sprintf('%s/app/service/default/view/%s.php', APP_DIR, $file);
         if ($fileCheck && !is_file($file)) {
