@@ -37,8 +37,8 @@ final class View
      * Partial files.
      * @const string
      */
-    const PARTIAL_HEAD = 'partial/head',
-          PARTIAL_FOOT = 'partial/foot';
+    public const PARTIAL_HEAD = 'partial/head',
+                 PARTIAL_FOOT = 'partial/foot';
 
     /**
      * Service.
