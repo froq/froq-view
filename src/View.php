@@ -24,7 +24,6 @@ declare(strict_types=1);
 namespace Froq\View;
 
 use Froq\Service\Service;
-use Froq\Util\Traits\GetterTrait;
 
 /**
  * @package    Froq
@@ -34,12 +33,6 @@ use Froq\Util\Traits\GetterTrait;
  */
 final class View
 {
-    /**
-     * Getter.
-     * @object Froq\Util\Traits\GetterTrait
-     */
-    use GetterTrait;
-
     /**
      * Partial files.
      * @const string
@@ -86,9 +79,54 @@ final class View
     {
         $this->service = $service;
 
-        if ($file) {
+        if ($file != null) {
             $this->setFile($file);
         }
+    }
+
+    /**
+     * Get service.
+     * @return Froq\Service\Service
+     */
+    public function getService(): Service
+    {
+        return $this->service;
+    }
+
+    /**
+     * Get file.
+     * @return ?string
+     */
+    public function getFile(): ?string
+    {
+        return $this->file;
+    }
+
+    /**
+     * Get file head.
+     * @return ?string
+     */
+    public function getFileHead(): ?string
+    {
+        return $this->fileHead;
+    }
+
+    /**
+     * Get file foot.
+     * @return ?string
+     */
+    public function getFileFoot(): ?string
+    {
+        return $this->fileFoot;
+    }
+
+    /**
+     * Get metas.
+     * @return array
+     */
+    public function getMetas(): array
+    {
+        return $this->metas;
     }
 
     /**
