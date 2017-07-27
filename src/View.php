@@ -178,7 +178,7 @@ final class View
      * @param  array|null $data
      * @return void
      */
-    public function display(array $data = null): : void
+    public function display(array $data = null): void
     {
         $this->include($this->file, $data);
     }
@@ -188,7 +188,7 @@ final class View
      * @param  array|null $data
      * @return void
      */
-    public function displayHead(array $data = null): : void
+    public function displayHead(array $data = null): void
     {
         if ($this->fileHead) {
             $this->include($this->fileHead, $data);
@@ -200,7 +200,7 @@ final class View
      * @param  array|null $data
      * @return void
      */
-    public function displayFoot(array $data = null): : void
+    public function displayFoot(array $data = null): void
     {
         if ($this->fileFoot) {
             $this->include($this->fileFoot, $data);
@@ -212,7 +212,7 @@ final class View
      * @param  array|null $data
      * @return void
      */
-    public function displayAll(array $data = null): : void
+    public function displayAll(array $data = null): void
     {
         $this->displayHead($data);
         $this->display($data);
@@ -225,7 +225,7 @@ final class View
      * @param  array|null $data
      * @return void
      */
-    public function include(string $file, array $data = null): : void
+    public function include(string $file, array $data = null): void
     {
         if (!empty($data)) {
             extract($data);
