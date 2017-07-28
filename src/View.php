@@ -231,7 +231,7 @@ final class View
             extract($data);
         }
 
-        include($file);
+        include_once($file);
     }
 
     /**
