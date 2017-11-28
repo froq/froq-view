@@ -267,6 +267,7 @@ final class View
      */
     private function prepareFile(string $file, bool $fileCheck = true): string
     {
+        $file = str_replace(["\0", "\r", "\n"], '', $file);
         if ($file == '') {
             throw new ViewException("No file given!");
         }
