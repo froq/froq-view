@@ -272,14 +272,7 @@ final class View
             throw new ViewException("No file given!");
         }
 
-        // custom file given
-        if ($file[0] == '.') {
-            $file = sprintf('%s.php', $file);
-        } else {
-            $file = sprintf('%s/app/service/%s/view/%s.php', APP_DIR, $this->service->getName(), $file);
-        }
-
-        // check file
+        $file = sprintf('%s/app/service/%s/view/%s.php', APP_DIR, $this->service->getName(), $file);
         if ($fileCheck && !is_file($file)) {
             // look up default folder
             if ($this->service->isDefaultService()) {
