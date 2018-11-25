@@ -264,19 +264,19 @@ final class View
     /**
      * Prepare file.
      * @param  string $file
-     * @param  bool   $fileCheck
+     * @param  bool   $doFileCheck
      * @return string
      * @throws Froq\View\ViewException
      */
-    private function prepareFile(string $file, bool $fileCheck = true): string
+    private function prepareFile(string $file, bool $doFileCheck = true): string
     {
         $file = str_replace(["\0", "\r", "\n"], '', $file);
         if ($file == '') {
-            throw new ViewException("No file given!");
+            throw new ViewException('No valid file given!');
         }
 
         $file = sprintf('%s/app/service/%s/view/%s.php', APP_DIR, $this->service->getName(), $file);
-        if ($fileCheck && !is_file($file)) {
+        if ($doFileCheck && !is_file($file)) {
             // look up default folder
             if ($this->service->isDefaultService()) {
                 $file = sprintf('%s/app/service/default/%s/view/%s', APP_DIR,
@@ -294,14 +294,14 @@ final class View
     /**
      * Prepare file default.
      * @param  string $file
-     * @param  bool   $fileCheck
+     * @param  bool   $doFileCheck
      * @return string
      * @throws Froq\View\ViewException
      */
-    private function prepareFileDefault(string $file, bool $fileCheck = true): string
+    private function prepareFileDefault(string $file, bool $doFileCheck = true): string
     {
         $file = sprintf('%s/app/service/default/view/%s.php', APP_DIR, $file);
-        if ($fileCheck && !is_file($file)) {
+        if ($doFileCheck && !is_file($file)) {
             throw new ViewException("View file not found! file: '{$file}'");
         }
 
