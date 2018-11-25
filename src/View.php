@@ -139,7 +139,7 @@ final class View
      */
     public function setFile(string $file): self
     {
-        $this->file = $this->prepareFile($file);
+        $this->file = $this->prepareFilePath($file);
 
         return $this;
     }
@@ -151,10 +151,10 @@ final class View
     public function setFileHead(): self
     {
         // check local service file
-        $this->fileHead = $this->prepareFile(self::PARTIAL_HEAD, false);
+        $this->fileHead = $this->prepareFilePath(self::PARTIAL_HEAD, false);
         if (!is_file($this->fileHead)) {
             // look up for global service file
-            $this->fileHead = $this->prepareFileDefault(self::PARTIAL_HEAD);
+            $this->fileHead = $this->prepareDefaultFilePath(self::PARTIAL_HEAD);
         }
 
         return $this;
@@ -167,10 +167,10 @@ final class View
     public function setFileFoot(): self
     {
         // check local service file
-        $this->fileFoot = $this->prepareFile(self::PARTIAL_FOOT, false);
+        $this->fileFoot = $this->prepareFilePath(self::PARTIAL_FOOT, false);
         if (!is_file($this->fileFoot)) {
             // look up for global service file
-            $this->fileFoot = $this->prepareFileDefault(self::PARTIAL_FOOT);
+            $this->fileFoot = $this->prepareDefaultFilePath(self::PARTIAL_FOOT);
         }
 
         return $this;
@@ -262,13 +262,13 @@ final class View
     }
 
     /**
-     * Prepare file.
+     * Prepare file path.
      * @param  string $file
      * @param  bool   $doFileCheck
      * @return string
      * @throws Froq\View\ViewException
      */
-    private function prepareFile(string $file, bool $doFileCheck = true): string
+    private function prepareFilePath(string $file, bool $doFileCheck = true): string
     {
         $file = str_replace(["\0", "\r", "\n"], '', $file);
         if ($file == '') {
@@ -292,13 +292,13 @@ final class View
     }
 
     /**
-     * Prepare file default.
+     * Prepare default file path.
      * @param  string $file
      * @param  bool   $doFileCheck
      * @return string
      * @throws Froq\View\ViewException
      */
-    private function prepareFileDefault(string $file, bool $doFileCheck = true): string
+    private function prepareDefaultFilePath(string $file, bool $doFileCheck = true): string
     {
         $file = sprintf('%s/app/service/default/view/%s.php', APP_DIR, $file);
         if ($doFileCheck && !is_file($file)) {
