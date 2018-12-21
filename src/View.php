@@ -135,45 +135,39 @@ final class View
     /**
      * Set file.
      * @param  string $file
-     * @return self
+     * @return void
      */
-    public function setFile(string $file): self
+    public function setFile(string $file): void
     {
         $this->file = $this->prepareFilePath($file);
-
-        return $this;
     }
 
     /**
      * Set file head.
-     * @return self
+     * @return void
      */
-    public function setFileHead(): self
+    public function setFileHead(): void
     {
         // check local service file
         $this->fileHead = $this->prepareFilePath(self::PARTIAL_HEAD, false);
-        if (!is_file($this->fileHead)) {
+        if (!file_exists($this->fileHead)) {
             // look up for global service file
             $this->fileHead = $this->prepareDefaultFilePath(self::PARTIAL_HEAD);
         }
-
-        return $this;
     }
 
     /**
      * Set file foot.
-     * @return self
+     * @return void
      */
-    public function setFileFoot(): self
+    public function setFileFoot(): void
     {
         // check local service file
         $this->fileFoot = $this->prepareFilePath(self::PARTIAL_FOOT, false);
-        if (!is_file($this->fileFoot)) {
+        if (!file_exists($this->fileFoot)) {
             // look up for global service file
             $this->fileFoot = $this->prepareDefaultFilePath(self::PARTIAL_FOOT);
         }
-
-        return $this;
     }
 
     /**
@@ -193,7 +187,7 @@ final class View
      */
     public function displayHead(array $data = null): void
     {
-        if ($this->fileHead) {
+        if ($this->fileHead != null) {
             $this->include($this->fileHead, $data);
         }
     }
@@ -205,7 +199,7 @@ final class View
      */
     public function displayFoot(array $data = null): void
     {
-        if ($this->fileFoot) {
+        if ($this->fileFoot != null) {
             $this->include($this->fileFoot, $data);
         }
     }
@@ -234,20 +228,18 @@ final class View
             extract($data);
         }
 
-        include_once($file);
+        include_once $file;
     }
 
     /**
      * Set meta.
      * @param  string $name
      * @param  any    $value
-     * @return self
+     * @return void
      */
-    public function setMeta(string $name, $value): self
+    public function setMeta(string $name, $value): void
     {
         $this->metas[$name] = $value;
-
-        return $this;
     }
 
     /**
@@ -276,14 +268,14 @@ final class View
         }
 
         $file = sprintf('%s/app/service/%s/view/%s.php', APP_DIR, $this->service->getName(), $file);
-        if ($doFileCheck && !is_file($file)) {
+        if ($doFileCheck && !file_exists($file)) {
             // look up default folder
             if ($this->service->isDefaultService()) {
                 $file = sprintf('%s/app/service/default/%s/view/%s', APP_DIR,
                     $this->service->getName(), basename($file));
             }
 
-            if (!is_file($file)) {
+            if (!file_exists($file)) {
                 throw new ViewException("View file not found! file: '{$file}'");
             }
         }
@@ -301,7 +293,7 @@ final class View
     private function prepareDefaultFilePath(string $file, bool $doFileCheck = true): string
     {
         $file = sprintf('%s/app/service/default/view/%s.php', APP_DIR, $file);
-        if ($doFileCheck && !is_file($file)) {
+        if ($doFileCheck && !file_exists($file)) {
             throw new ViewException("View file not found! file: '{$file}'");
         }
 
