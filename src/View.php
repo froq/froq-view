@@ -264,7 +264,7 @@ final class View
     {
         $file = str_replace(["\0", "\r", "\n"], '', $file);
         if ($file == '') {
-            throw new ViewException('No valid file given!');
+            throw new ViewException('No valid file given');
         }
 
         $file = sprintf('%s/app/service/%s/view/%s.php', APP_DIR, $this->service->getName(), $file);
@@ -276,7 +276,7 @@ final class View
             }
 
             if (!file_exists($file)) {
-                throw new ViewException("View file not found! file: '{$file}'");
+                throw new ViewException("View file '{$file}' not found");
             }
         }
 
@@ -294,7 +294,7 @@ final class View
     {
         $file = sprintf('%s/app/service/default/view/%s.php', APP_DIR, $file);
         if ($doFileCheck && !file_exists($file)) {
-            throw new ViewException("View file not found! file: '{$file}'");
+            throw new ViewException("View file '{$file}' not found");
         }
 
         return $file;
