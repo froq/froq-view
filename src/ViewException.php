@@ -31,6 +31,7 @@ namespace Froq\View;
  * @subpackage Froq\View
  * @object     Froq\View\ViewException
  * @author     Kerem Güneş <k-gun@mail.com>
+ * @since      1.0
  */
 final class ViewException extends \Exception
 {}

@@ -33,6 +33,7 @@ use Froq\Service\Service;
  * @subpackage Froq\View
  * @object     Froq\View\View
  * @author     Kerem Güneş <k-gun@mail.com>
+ * @since      1.0
  */
 final class View
 {
