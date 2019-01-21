@@ -9,7 +9,7 @@
     ],
     "require": {
         "php": "^7.2",
-        "froq/froq-service": "3.0.0"
+        "froq/froq-service": "^3.0"
     },
     "autoload": {
         "classmap": ["src/"]
