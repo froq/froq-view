@@ -24,16 +24,16 @@
  */
 declare(strict_types=1);
 
-namespace Froq\View;
+namespace froq\view;
 
-use Froq\Service\Service;
+use froq\service\Service;
 
 /**
- * @package    Froq
- * @subpackage Froq\View
- * @object     Froq\View\View
- * @author     Kerem Güneş <k-gun@mail.com>
- * @since      1.0
+ * View.
+ * @package froq\view
+ * @object  froq\view\View
+ * @author  Kerem Güneş <k-gun@mail.com>
+ * @since   1.0
  */
 final class View
 {
@@ -46,7 +46,7 @@ final class View
 
     /**
      * Service.
-     * @var Froq\Service\Service
+     * @var froq\service\Service
      */
     private $service;
 
@@ -76,7 +76,7 @@ final class View
 
     /**
      * Constructor.
-     * @param Froq\Service\Service $service
+     * @param froq\service\Service $service
      * @param string               $file
      */
     public function __construct(Service $service, string $file = null)
@@ -90,7 +90,7 @@ final class View
 
     /**
      * Get service.
-     * @return Froq\Service\Service
+     * @return froq\service\Service
      */
     public function getService(): Service
     {
@@ -259,7 +259,7 @@ final class View
      * @param  string $file
      * @param  bool   $fileCheck
      * @return string
-     * @throws Froq\View\ViewException
+     * @throws froq\view\ViewException
      */
     private function prepareFilePath(string $file, bool $fileCheck = true): string
     {
@@ -289,7 +289,7 @@ final class View
      * @param  string $file
      * @param  bool   $fileCheck
      * @return string
-     * @throws Froq\View\ViewException
+     * @throws froq\view\ViewException
      */
     private function prepareDefaultFilePath(string $file, bool $fileCheck = true): string
     {

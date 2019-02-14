@@ -24,14 +24,14 @@
  */
 declare(strict_types=1);
 
-namespace Froq\View;
+namespace froq\view;
 
 /**
- * @package    Froq
- * @subpackage Froq\View
- * @object     Froq\View\ViewException
- * @author     Kerem Güneş <k-gun@mail.com>
- * @since      1.0
+ * View exception.
+ * @package froq\view
+ * @object  froq\view\ViewException
+ * @author  Kerem Güneş <k-gun@mail.com>
+ * @since   1.0
  */
 final class ViewException extends \Exception
 {}
