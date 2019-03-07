@@ -75,6 +75,12 @@ final class View
     private $metas = [];
 
     /**
+     * Html.
+     * @var froq\view\Html
+     */
+    private $html;
+
+    /**
      * Constructor.
      * @param froq\service\Service $service
      * @param string               $file
@@ -82,10 +88,10 @@ final class View
     public function __construct(Service $service, string $file = null)
     {
         $this->service = $service;
-
         if ($file != null) {
             $this->setFile($file);
         }
+        $this->html = new Html();
     }
 
     /**
@@ -131,6 +137,15 @@ final class View
     public function getMetas(): array
     {
         return $this->metas;
+    }
+
+    /**
+     * Het html.
+     * @return froq\view\Html
+     */
+    public function getHtml(): Html
+    {
+        return $this->html;
     }
 
     /**
@@ -233,6 +248,20 @@ final class View
     }
 
     /**
+     * Meta (get/set meta).
+     * @param  string   $name
+     * @param  any|null $value
+     * @return any|null|void
+     */
+    public function meta(string $name, $value = null)
+    {
+        if ($value === null) {
+            return $this->getMeta($name);
+        }
+        $this->setMeta($name, $value);
+    }
+
+    /**
      * Set meta.
      * @param  string $name
      * @param  any    $value
@@ -245,13 +274,24 @@ final class View
 
     /**
      * Get meta.
-     * @param  string $name
-     * @param  any    $valueDefault
+     * @param  string   $name
+     * @param  any|null $valueDefault
      * @return any
      */
     public function getMeta(string $name, $valueDefault = null)
     {
         return $this->metas[$name] ?? $valueDefault;
+    }
+
+    /**
+     * Html.
+     * @param  ... $arguments
+     * @return string
+     * @since  3.0
+     */
+    public function html(...$arguments): string
+    {
+        return $this->html::create(...$arguments);
     }
 
     /**
