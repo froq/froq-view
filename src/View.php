@@ -38,13 +38,6 @@ use froq\service\Service;
 final class View
 {
     /**
-     * Partial files.
-     * @const string
-     */
-    public const PARTIAL_HEAD = 'partial/head',
-                 PARTIAL_FOOT = 'partial/foot';
-
-    /**
      * Service.
      * @var froq\service\Service
      */
@@ -88,9 +81,11 @@ final class View
     public function __construct(Service $service, string $file = null)
     {
         $this->service = $service;
+
         if ($file != null) {
             $this->setFile($file);
         }
+
         $this->html = new Html();
     }
 
@@ -165,10 +160,10 @@ final class View
     public function setFileHead(): void
     {
         // check local service file
-        $this->fileHead = $this->prepareFilePath(self::PARTIAL_HEAD, false);
+        $this->fileHead = $this->prepareFilePath('head', false);
         if (!file_exists($this->fileHead)) {
-            // look up for global service file
-            $this->fileHead = $this->prepareDefaultFilePath(self::PARTIAL_HEAD);
+            // look up for default file
+            $this->fileHead = $this->prepareDefaultFilePath('head');
         }
     }
 
@@ -179,11 +174,25 @@ final class View
     public function setFileFoot(): void
     {
         // check local service file
-        $this->fileFoot = $this->prepareFilePath(self::PARTIAL_FOOT, false);
+        $this->fileFoot = $this->prepareFilePath('foot', false);
         if (!file_exists($this->fileFoot)) {
-            // look up for global service file
-            $this->fileFoot = $this->prepareDefaultFilePath(self::PARTIAL_FOOT);
+            // look up for default file
+            $this->fileFoot = $this->prepareDefaultFilePath('foot');
         }
+    }
+
+    /**
+     * Load.
+     * @param  string     $file
+     * @param  array|null $data
+     * @return void
+     */
+    public function load(string $file, array $data = null): void
+    {
+        if ($data != null) {
+            extract($data);
+        }
+        include $file;
     }
 
     /**
@@ -193,72 +202,15 @@ final class View
      */
     public function display(array $data = null): void
     {
-        $this->include($this->file, $data);
-    }
-
-    /**
-     * Display head.
-     * @param  array|null $data
-     * @return void
-     */
-    public function displayHead(array $data = null): void
-    {
         if ($this->fileHead != null) {
-            $this->include($this->fileHead, $data);
+            $this->load($this->fileHead, $data);
         }
-    }
 
-    /**
-     * Display foot.
-     * @param  array|null $data
-     * @return void
-     */
-    public function displayFoot(array $data = null): void
-    {
+        $this->load($this->file, $data); // main file
+
         if ($this->fileFoot != null) {
-            $this->include($this->fileFoot, $data);
+            $this->load($this->fileFoot, $data);
         }
-    }
-
-    /**
-     * Display all.
-     * @param  array|null $data
-     * @return void
-     */
-    public function displayAll(array $data = null): void
-    {
-        $this->displayHead($data);
-        $this->display($data);
-        $this->displayFoot($data);
-    }
-
-    /**
-     * Include.
-     * @param  string     $file
-     * @param  array|null $data
-     * @return void
-     */
-    public function include(string $file, array $data = null): void
-    {
-        if (!empty($data)) {
-            extract($data);
-        }
-
-        include_once $file;
-    }
-
-    /**
-     * Meta (get/set meta).
-     * @param  string   $name
-     * @param  any|null $value
-     * @return any|null|void
-     */
-    public function meta(string $name, $value = null)
-    {
-        if ($value === null) {
-            return $this->getMeta($name);
-        }
-        $this->setMeta($name, $value);
     }
 
     /**
@@ -284,6 +236,21 @@ final class View
     }
 
     /**
+     * Meta (get/set meta).
+     * @param  string   $name
+     * @param  any|null $value
+     * @return any|null|void
+     */
+    public function meta(string $name, $value = null)
+    {
+        if ($value === null) {
+            return $this->getMeta($name);
+        }
+
+        $this->setMeta($name, $value);
+    }
+
+    /**
      * Html.
      * @param  ... $arguments
      * @return string
@@ -303,7 +270,7 @@ final class View
      */
     private function prepareFilePath(string $file, bool $fileCheck = true): string
     {
-        $file = str_replace(["\0", "\r", "\n"], '', $file);
+        $file = str_replace(["\0", "\r", "\n"], '', trim($file));
         if ($file == '') {
             throw new ViewException('No valid file given');
         }
