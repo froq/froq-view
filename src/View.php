@@ -275,7 +275,23 @@ final class View
             throw new ViewException('No valid file given');
         }
 
-        $file = sprintf('%s/app/service/%s/view/%s.php', APP_DIR, $this->service->getName(), $file);
+        // custom
+        if ($file[0] == '.') {
+            $fileCheck = false;
+            if (!file_exists($file)) {
+                throw new ViewException("Custom view file '{$file}' not found");
+            }
+        } elseif ($file[0] == '@') {
+            // custom in default view folder
+            $file = sprintf('%s/app/service/default/view/%s.php', APP_DIR, substr($file, 1));
+            $fileCheck = false;
+            if (!file_exists($file)) {
+                throw new ViewException("Default view file '{$file}' not found");
+            }
+        } else {
+            $file = sprintf('%s/app/service/%s/view/%s.php', APP_DIR, $this->service->getName(), $file);
+        }
+
         if ($fileCheck && !file_exists($file)) {
             // look up default folder
             if ($this->service->isDefaultService()) {
