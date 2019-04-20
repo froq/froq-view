@@ -283,7 +283,7 @@ final class View
             }
         } elseif ($file[0] == '@') {
             // custom in default view folder
-            $file = sprintf('%s/app/service/default/view/%s.php', APP_DIR, substr($file, 1));
+            $file = sprintf('%s/app/service/_default/view/%s.php', APP_DIR, substr($file, 1));
             $fileCheck = false;
             if (!file_exists($file)) {
                 throw new ViewException("Default view file '{$file}' not found");
@@ -295,7 +295,7 @@ final class View
         if ($fileCheck && !file_exists($file)) {
             // look up default folder
             if ($this->service->isDefaultService()) {
-                $file = sprintf('%s/app/service/default/%s/view/%s', APP_DIR,
+                $file = sprintf('%s/app/service/_default/%s/view/%s', APP_DIR,
                     $this->service->getName(), basename($file));
             }
 
@@ -316,7 +316,7 @@ final class View
      */
     private function prepareDefaultFilePath(string $file, bool $fileCheck = true): string
     {
-        $file = sprintf('%s/app/service/default/view/%s.php', APP_DIR, $file);
+        $file = sprintf('%s/app/service/_default/view/%s.php', APP_DIR, $file);
         if ($fileCheck && !file_exists($file)) {
             throw new ViewException("View file '{$file}' not found");
         }
