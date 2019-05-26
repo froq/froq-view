@@ -275,28 +275,36 @@ final class View
             throw new ViewException('No valid file given');
         }
 
-        // custom
-        if ($file[0] == '.') {
+        // custom (eg: @@path/to/file)
+        if ($file[0].$file[1] == '@@') {
+            $file = substr($file, 2);
             $fileCheck = false;
             if (!file_exists($file)) {
                 throw new ViewException("Custom view file '{$file}' not found");
             }
         } elseif ($file[0] == '@') {
-            // custom in default view folder
+            // custom in default view folder (eg: @app/service/_default/view/error.php)
             $file = sprintf('%s/app/service/_default/view/%s.php', APP_DIR, substr($file, 1));
             $fileCheck = false;
             if (!file_exists($file)) {
                 throw new ViewException("Default view file '{$file}' not found");
             }
         } else {
-            $file = sprintf('%s/app/service/%s/view/%s.php', APP_DIR, $this->service->getName(), $file);
+            $file = basename($file);
+            $fileExt = '.php';
+            $fileExtPos = strrpos($file, $fileExt);
+            if ($fileExtPos) {
+                $file = substr($file, 0, $fileExtPos);
+            }
+            $file = sprintf('%s/app/service/%s/view/%s%s', APP_DIR, $this->service->getName(),
+                $file, $fileExt);
         }
 
         if ($fileCheck && !file_exists($file)) {
             // look up default folder
             if ($this->service->isDefaultService()) {
-                $file = sprintf('%s/app/service/_default/%s/view/%s', APP_DIR,
-                    $this->service->getName(), basename($file));
+                $file = sprintf('%s/app/service/_default/%s/view/%s', APP_DIR, $this->service->getName(),
+                    basename($file));
             }
 
             if (!file_exists($file)) {
