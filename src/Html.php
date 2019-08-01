@@ -27,7 +27,7 @@ declare(strict_types=1);
 namespace froq\view;
 
 /**
- * View exception.
+ * Html.
  * @package froq\view
  * @object  froq\view\Html
  * @author  Kerem Güneş <k-gun@mail.com>
