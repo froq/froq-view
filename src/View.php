@@ -155,29 +155,37 @@ final class View
 
     /**
      * Set file head.
+     * @param  string|null $file
      * @return void
      */
-    public function setFileHead(): void
+    public function setFileHead(string $file = null): void
     {
+        $file = $file ?? 'head';
+
         // check local service file
-        $this->fileHead = $this->prepareFilePath('head', false);
+        $this->fileHead = $this->prepareFilePath($file, false);
+
         if (!file_exists($this->fileHead)) {
             // look up for default file
-            $this->fileHead = $this->prepareDefaultFilePath('head');
+            $this->fileHead = $this->prepareDefaultFilePath($file);
         }
     }
 
     /**
      * Set file foot.
+     * @param  string|null $file
      * @return void
      */
-    public function setFileFoot(): void
+    public function setFileFoot(string $file = null): void
     {
+        $file = $file ?? 'foot';
+
         // check local service file
-        $this->fileFoot = $this->prepareFilePath('foot', false);
+        $this->fileFoot = $this->prepareFilePath($file, false);
+
         if (!file_exists($this->fileFoot)) {
             // look up for default file
-            $this->fileFoot = $this->prepareDefaultFilePath('foot');
+            $this->fileFoot = $this->prepareDefaultFilePath($file);
         }
     }
 
@@ -290,6 +298,7 @@ final class View
                 throw new ViewException("Default view file '{$file}' not found");
             }
         } else {
+            // in service view folder (eg: @app/service/view/main.php)
             $file = basename($file);
             $fileExt = '.php';
             $fileExtPos = strrpos($file, $fileExt);
