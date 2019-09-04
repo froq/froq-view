@@ -69,12 +69,13 @@ final class Html
      * @param  string      $tag
      * @param  string|null $content
      * @param  array|null  $attributes
+     * @param  array|null  $children
      * @param  bool        $selfClosing
      * @param  bool        $v5
      * @return string
      */
     public static function create(string $tag, string $content = null, array $attributes = null,
-        bool $selfClosing = false, bool $v5 = true): string
+        array $children = null, bool $selfClosing = null, bool $v5 = true): string
     {
         if ($attributes != null) {
             $tmp = [];
@@ -90,8 +91,14 @@ final class Html
             $attributes = ' '. join(' ', $tmp);
         }
 
-        return $selfClosing || in_array($tag, self::$selfClosingTags)
-            ? sprintf('<%s%s%s>', $tag, $attributes, $v5 ? '' : ' /')
-            : sprintf('<%s%s>%s</%s>', $tag, $attributes, $content, $tag);
+        if ($children != null) {
+            // @note: only one-dimensional children accepted
+            // @note: all children's arguments should be same range with create()
+            $children = self::create(...$children);
+        }
+
+        return $selfClosing ?? in_array($tag, self::$selfClosingTags)
+            ? sprintf('<%s%s%s>', $tag, $attributes, ($v5 ? '' : ' /'))
+            : sprintf('<%s%s>%s%s</%s>', $tag, $attributes, $content, $children, $tag);
     }
 }
