@@ -298,8 +298,8 @@ final class View
                 throw new ViewException("Default view file '{$file}' not found");
             }
         } else {
-            // in service view folder (eg: @app/service/view/main.php)
-            $file = basename($file);
+            // in service view folder (eg: post.php or post/edit.php)
+            $file =  strpos($file, '/') > 0 ? $file : basename($file);
             $fileExt = '.php';
             $fileExtPos = strrpos($file, $fileExt);
             if ($fileExtPos) {
