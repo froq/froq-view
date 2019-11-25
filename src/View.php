@@ -26,7 +26,8 @@ declare(strict_types=1);
 
 namespace froq\view;
 
-use froq\service\Service;
+use froq\view\ViewException;
+use froq\service\ServiceInterface;
 
 /**
  * View.
@@ -39,90 +40,53 @@ final class View
 {
     /**
      * Service.
-     * @var froq\service\Service
+     * @var froq\service\ServiceInterface
      */
-    private $service;
+    private ServiceInterface $service;
 
     /**
-     * File (main).
-     * @var string
+     * Partials.
+     * @var array
      */
-    private $file;
-
-    /**
-     * File head (header).
-     * @var string
-     */
-    private $fileHead;
-
-    /**
-     * File foot (footer).
-     * @var string
-     */
-    private $fileFoot;
+    private array $partials = [
+        // Possible for default head & foot files.
+        // head => './app/service/_default/view/head.php' or just '@head'
+        // foot => './app/service/_default/view/foot.php' or just '@foot'
+    ];
 
     /**
      * Metas.
      * @var array
      */
-    private $metas = [];
-
-    /**
-     * Html.
-     * @var froq\view\Html
-     */
-    private $html;
+    private array $metas = [];
 
     /**
      * Constructor.
-     * @param froq\service\Service $service
-     * @param string               $file
+     * @param froq\service\ServiceInterface $service
+     * @param array|null                    $partials
      */
-    public function __construct(Service $service, string $file = null)
+    public function __construct(ServiceInterface $service, array $partials = null)
     {
         $this->service = $service;
-
-        if ($file != null) {
-            $this->setFile($file);
-        }
-
-        $this->html = new Html();
+        $this->partials = $partials ?? [];
     }
 
     /**
      * Get service.
-     * @return froq\service\Service
+     * @return froq\service\ServiceInterface
      */
-    public function getService(): Service
+    public function getService(): ServiceInterface
     {
         return $this->service;
     }
 
     /**
-     * Get file.
-     * @return ?string
+     * Get partials.
+     * @return array
      */
-    public function getFile(): ?string
+    public function getPartials(): array
     {
-        return $this->file;
-    }
-
-    /**
-     * Get file head.
-     * @return ?string
-     */
-    public function getFileHead(): ?string
-    {
-        return $this->fileHead;
-    }
-
-    /**
-     * Get file foot.
-     * @return ?string
-     */
-    public function getFileFoot(): ?string
-    {
-        return $this->fileFoot;
+        return $this->partials;
     }
 
     /**
@@ -132,93 +96,6 @@ final class View
     public function getMetas(): array
     {
         return $this->metas;
-    }
-
-    /**
-     * Het html.
-     * @return froq\view\Html
-     */
-    public function getHtml(): Html
-    {
-        return $this->html;
-    }
-
-    /**
-     * Set file.
-     * @param  string $file
-     * @return void
-     */
-    public function setFile(string $file): void
-    {
-        $this->file = $this->prepareFilePath($file);
-    }
-
-    /**
-     * Set file head.
-     * @param  string|null $file
-     * @return void
-     */
-    public function setFileHead(string $file = null): void
-    {
-        $file = $file ?? 'head';
-
-        // check local service file
-        $this->fileHead = $this->prepareFilePath($file, false);
-
-        if (!file_exists($this->fileHead)) {
-            // look up for default file
-            $this->fileHead = $this->prepareDefaultFilePath($file);
-        }
-    }
-
-    /**
-     * Set file foot.
-     * @param  string|null $file
-     * @return void
-     */
-    public function setFileFoot(string $file = null): void
-    {
-        $file = $file ?? 'foot';
-
-        // check local service file
-        $this->fileFoot = $this->prepareFilePath($file, false);
-
-        if (!file_exists($this->fileFoot)) {
-            // look up for default file
-            $this->fileFoot = $this->prepareDefaultFilePath($file);
-        }
-    }
-
-    /**
-     * Load.
-     * @param  string     $file
-     * @param  array|null $data
-     * @return void
-     */
-    public function load(string $file, array $data = null): void
-    {
-        if ($data != null) {
-            extract($data);
-        }
-        include $file;
-    }
-
-    /**
-     * Display.
-     * @param  array|null $data
-     * @return void
-     */
-    public function display(array $data = null): void
-    {
-        if ($this->fileHead != null) {
-            $this->load($this->fileHead, $data);
-        }
-
-        $this->load($this->file, $data); // main file
-
-        if ($this->fileFoot != null) {
-            $this->load($this->fileFoot, $data);
-        }
     }
 
     /**
@@ -236,7 +113,7 @@ final class View
      * Get meta.
      * @param  string   $name
      * @param  any|null $valueDefault
-     * @return any
+     * @return any|null
      */
     public function getMeta(string $name, $valueDefault = null)
     {
@@ -244,97 +121,100 @@ final class View
     }
 
     /**
-     * Meta (get/set meta).
-     * @param  string   $name
-     * @param  any|null $value
-     * @return any|null|void
+     * Display.
+     * @param  string     $file
+     * @param  array|null $metadata
+     * @param  array|null $partials
+     * @return void
      */
-    public function meta(string $name, $value = null)
+    public function display(string $file, array $metadata = null, array $partials = null): void
     {
-        if ($value === null) {
-            return $this->getMeta($name);
+        $partials = $partials ?? $this->partials;
+        if ($partials != null) {
+            if (isset($partials['head'])) {
+                $fileHead = $this->prepareFilePath($partials['head']);
+            }
+            if (isset($partials['foot'])) {
+                $fileFoot = $this->prepareFilePath($partials['foot']);
+            }
         }
 
-        $this->setMeta($name, $value);
-    }
+        $meta = (array) ($metadata['meta'] ?? []);
+        $data = (array) ($metadata['data'] ?? []);
 
-    /**
-     * Html.
-     * @param  ... $arguments
-     * @return string
-     * @since  3.0
-     */
-    public function html(...$arguments): string
-    {
-        return $this->html::create(...$arguments);
+        // Add metas for later uses in-service global scope.
+        if ($meta != null) {
+            foreach ($meta as $name => $value) {
+                $this->setMeta($name, $value);
+            }
+        }
+
+        // Extract data & make accessible in included files below.
+        if ($data != null) {
+            extract($data);
+        }
+
+        // Load head file.
+        isset($fileHead) && include $fileHead;
+
+        // Load main file.
+        include $this->prepareFilePath($file);
+
+        // Load foot file.
+        isset($fileFoot) && include $fileFoot;
     }
 
     /**
      * Prepare file path.
      * @param  string $file
-     * @param  bool   $fileCheck
      * @return string
      * @throws froq\view\ViewException
      */
-    private function prepareFilePath(string $file, bool $fileCheck = true): string
+    private function prepareFilePath(string $file): string
     {
-        $file = str_replace(["\0", "\r", "\n"], '', trim($file));
-        if ($file == '') {
+        if (!defined('APP_DIR')) {
+            throw new ViewException('APP_DIR is not defined');
+        }
+
+        if (!preg_match('~^[@]?[\w\-\.\/]+$~', $file)) {
             throw new ViewException('No valid file given');
         }
 
-        // custom (eg: @@path/to/file)
-        if ($file[0].$file[1] == '@@') {
-            $file = substr($file, 2);
-            $fileCheck = false;
-            if (!file_exists($file)) {
-                throw new ViewException("Custom view file '{$file}' not found");
-            }
-        } elseif ($file[0] == '@') {
-            // custom in default view folder (eg: @app/service/_default/view/error.php)
+        // Direct path.
+        if (file_exists($file)) {
+            return $file;
+        }
+
+        // Check sub-folder (eg: view/post.php or view/post/edit.php)
+        $file = strpos($file, '/') > 0 ? $file : basename($file);
+
+        $fileExt = '.php';
+        $fileExtPos = strrpos($file, $fileExt);
+        if ($fileExtPos) {
+            $file = substr($file, 0, $fileExtPos);
+        }
+
+        // Custom files in default view folder (eg: @error => app/service/_default/view/error.php)
+        if ($file[0] == '@') {
             $file = sprintf('%s/app/service/_default/view/%s.php', APP_DIR, substr($file, 1));
-            $fileCheck = false;
+
             if (!file_exists($file)) {
                 throw new ViewException("Default view file '{$file}' not found");
             }
+
+            return $file;
+        }
+
+        // Use default view folder for default services.
+        if ($this->service->isDefaultService()) {
+            $file = sprintf('%s/app/service/_default/%s/view/%s.php', APP_DIR, $this->service->getName(),
+                $file);
         } else {
-            // in service view folder (eg: post.php or post/edit.php)
-            $file =  strpos($file, '/') > 0 ? $file : basename($file);
-            $fileExt = '.php';
-            $fileExtPos = strrpos($file, $fileExt);
-            if ($fileExtPos) {
-                $file = substr($file, 0, $fileExtPos);
-            }
-            $file = sprintf('%s/app/service/%s/view/%s%s', APP_DIR, $this->service->getName(),
-                $file, $fileExt);
+            $file = sprintf('%s/app/service/%s/view/%s.php', APP_DIR, $this->service->getName(),
+                $file);
         }
 
-        if ($fileCheck && !file_exists($file)) {
-            // look up default folder
-            if ($this->service->isDefaultService()) {
-                $file = sprintf('%s/app/service/_default/%s/view/%s', APP_DIR, $this->service->getName(),
-                    basename($file));
-            }
-
-            if (!file_exists($file)) {
-                throw new ViewException("View file '{$file}' not found");
-            }
-        }
-
-        return $file;
-    }
-
-    /**
-     * Prepare default file path.
-     * @param  string $file
-     * @param  bool   $fileCheck
-     * @return string
-     * @throws froq\view\ViewException
-     */
-    private function prepareDefaultFilePath(string $file, bool $fileCheck = true): string
-    {
-        $file = sprintf('%s/app/service/_default/view/%s.php', APP_DIR, $file);
-        if ($fileCheck && !file_exists($file)) {
+        if (!file_exists($file)) {
             throw new ViewException("View file '{$file}' not found");
         }
 
