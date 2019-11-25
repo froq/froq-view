@@ -26,12 +26,14 @@ declare(strict_types=1);
 
 namespace froq\view;
 
+use froq\Exception;
+
 /**
- * View exception.
+ * View Exception.
  * @package froq\view
  * @object  froq\view\ViewException
  * @author  Kerem Güneş <k-gun@mail.com>
  * @since   1.0
  */
-final class ViewException extends \Exception
+final class ViewException extends Exception
 {}
