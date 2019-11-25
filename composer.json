@@ -1,15 +1,16 @@
 {
     "name": "froq/froq-view",
     "homepage": "https://github.com/froq/froq-view",
-    "description": "View module for Froq!",
+    "description": "Froq! View.",
     "keywords": ["froq", "view"],
     "license": "MIT",
     "authors": [
         {"name": "Kerem Güneş", "email": "k-gun@mail.com"}
     ],
     "require": {
-        "php": "^7.2",
-        "froq/froq-service": "^3.0"
+        "php": "^7.4",
+        "froq/froq": "^4.0",
+        "froq/froq-service": "^4.0"
     },
     "autoload": {
         "classmap": ["src/"]
