@@ -72,6 +72,15 @@ final class View
     }
 
     /**
+     * Invoke.
+     * @param ... $arguments
+     */
+    public function __invoke(...$arguments)
+    {
+        $this->display(...$arguments);
+    }
+
+    /**
      * Get service.
      * @return froq\service\ServiceInterface
      */
