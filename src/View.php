@@ -26,8 +26,8 @@ declare(strict_types=1);
 
 namespace froq\view;
 
-use froq\view\ViewException;
 use froq\service\ServiceInterface;
+use froq\view\ViewException;
 
 /**
  * View.
