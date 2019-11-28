@@ -46,7 +46,7 @@ final class View
 
     /**
      * Partials.
-     * @var array<string,string>
+     * @var array<string, string>
      */
     private array $partials = [
         // Possible for default head & foot files.
@@ -56,14 +56,14 @@ final class View
 
     /**
      * Metas.
-     * @var array<string,any>
+     * @var array<string, any>
      */
     private array $metas = [];
 
     /**
      * Constructor.
-     * @param froq\service\ServiceInterface $service
-     * @param array<string,string>|null     $partials
+     * @param froq\service\ServiceInterface  $service
+     * @param array<string, string>|null     $partials
      */
     public function __construct(ServiceInterface $service, array $partials = null)
     {
@@ -131,9 +131,9 @@ final class View
 
     /**
      * Display.
-     * @param  string                    $file
-     * @param  array<string,any>|null    $metadata
-     * @param  array<string,string>|null $partials
+     * @param  string                     $file
+     * @param  array<string, any>|null    $metadata
+     * @param  array<string, string>|null $partials
      * @return void
      */
     public function display(string $file, array $metadata = null, array $partials = null): void
