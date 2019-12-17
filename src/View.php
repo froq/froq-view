@@ -158,19 +158,30 @@ final class View
             }
         }
 
-        // Extract data & make accessible in included files below.
+        // Load head file.
+        isset($fileHead) && $this->includeFile($fileHead, $data);
+
+        // Load main file.
+        $this->includeFile($this->prepareFilePath($file), $data);
+
+        // Load foot file.
+        isset($fileFoot) && $this->includeFile($fileFoot, $data);
+    }
+
+    /**
+     * Include file.
+     * @param  string     $file
+     * @param  array|null $data
+     * @return void
+     */
+    private function includeFile(string $file, array $data = null): void
+    {
+        // Extract data & make accessible in included file.
         if ($data != null) {
             extract($data);
         }
 
-        // Load head file.
-        isset($fileHead) && include $fileHead;
-
-        // Load main file.
-        include $this->prepareFilePath($file);
-
-        // Load foot file.
-        isset($fileFoot) && include $fileFoot;
+        include $file;
     }
 
     /**
